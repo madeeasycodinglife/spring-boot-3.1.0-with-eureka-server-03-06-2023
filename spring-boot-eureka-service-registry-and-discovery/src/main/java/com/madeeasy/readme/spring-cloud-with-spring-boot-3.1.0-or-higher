@@ -1,0 +1,202 @@
+
+Note ::
+  only add one dependency and rest all will be same
+  i.e. ::
+  ------
+           <dependency>
+              <groupId>org.springframework.cloud</groupId>
+              <artifactId>spring-cloud-context</artifactId>
+              <version>4.0.3</version>
+          </dependency>
+
+User cases of the above spring-cloud-context ::
+
+#1:) Environment Configuration: spring-cloud-context provides enhanced support for environment configuration in distributed systems.
+It allows you to manage and propagate environment-specific properties, such as configuration files or external configuration sources,
+across your microservices.
+
+#2:)Refresh Scope: spring-cloud-context introduces the concept of a refresh scope, which allows you to define beans that can be dynamically
+refreshed at runtime. This is particularly useful when you want to update the configuration of certain components without restarting
+the entire application.
+
+#3:)Discovery Client Integration: spring-cloud-context integrates with service discovery clients, such as Eureka, Consul, or ZooKeeper.
+It provides utilities to interact with these discovery services and obtain information about available services and their instances.
+
+#4:)Health Indicators: spring-cloud-context includes health indicators that allow you to expose the health status of your microservices.
+Health indicators provide insights into the readiness and liveness of your application, which is important for monitoring and managing
+the overall system.
+
+#5:)Event Notification: spring-cloud-context facilitates event-driven communication and coordination between microservices. It provides an
+ event notification mechanism that allows components to publish and subscribe to events, enabling asynchronous interactions between services.
+  --------
+  ex ::
+  #1) ------------------------------------------------ for eureka server ------------------------------------------------
+
+    yml file ::
+    --------
+    server:
+      port: 8761
+
+    eureka:
+      instance:
+        hostname: localhost
+      client:
+        registerWithEureka: false
+        fetchRegistry: false
+
+
+   pom file ::
+   ----------
+     <properties>
+        <java.version>20</java.version>
+        <spring-cloud.version>2022.0.3</spring-cloud.version>
+    </properties>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+This spring-cloud-context is very very important without this don't expect to run either eureka server or eureka cilent in spring boot 3.1.0 or higher
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>4.0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-netflix-eureka-server</artifactId>
+        </dependency>
+  <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+    	<repositories>
+    		<repository>
+    			<id>netflix-candidates</id>
+    			<name>Netflix Candidates</name>
+    			<url>https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates</url>
+    			<snapshots>
+    				<enabled>false</enabled>
+    			</snapshots>
+    		</repository>
+    	</repositories>
+
+
+#2) ------------------------------------------------ for eureka client ------------------------------------------------
+
+
+    yml file ::
+    --------
+
+spring:
+  application:
+    name: eureka-client
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+
+   pom file ::
+   ----------
+   	<properties>
+   		<java.version>20</java.version>
+   		<spring-cloud.version>2022.0.3</spring-cloud.version>
+   	</properties>
+
+   	     <dependency>
+   			<groupId>org.springframework.boot</groupId>
+   			<artifactId>spring-boot-starter-web</artifactId>
+   		</dependency>
+
+This spring-cloud-context is very very important without this don't expect to run either eureka server or eureka cilent in spring boot 3.1.0 or higher
+        <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-context</artifactId>
+			<version>4.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+
+     <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+    <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	<repositories>
+		<repository>
+			<id>netflix-candidates</id>
+			<name>Netflix Candidates</name>
+			<url>https://artifactory-oss.prod.netflix.net/artifactory/maven-oss-candidates</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+##################################____________________________END___________________________________########################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
